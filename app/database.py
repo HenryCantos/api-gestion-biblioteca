@@ -2,9 +2,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 
-DATABASE_URL = "postgresql://postgres:042014@localhost:5432/biblioteca"
+# Cambiamos la URL para que apunte al archivo local SQLite 'biblioteca.db'
+DATABASE_URL = "sqlite:///./biblioteca.db"
 
-engine = create_engine(DATABASE_URL)
+# Agregamos connect_args para permitir que funcione correctamente con FastAPI
+engine = create_engine(
+    DATABASE_URL, 
+    connect_args={"check_same_thread": False}
+)
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -13,4 +18,3 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
-
